@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Replacement_Asset_Cannot_Be_Same</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND(
+    NOT(ISBLANK(Replaced_Asset__c)),
+    Replaced_Asset__c = Asset__c
+)</errorConditionFormula>
+    <errorMessage>Replaced Asset cannot be the same as the assigned Asset.</errorMessage>
+</ValidationRule>

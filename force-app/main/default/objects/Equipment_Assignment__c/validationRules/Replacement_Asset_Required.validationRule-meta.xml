@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Replacement_Asset_Required</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND(
+    ISPICKVAL(Temporary_Reason__c, &quot;Maintenance Replacement&quot;),
+    ISBLANK(Replaced_Asset__c)
+)</errorConditionFormula>
+    <errorDisplayField>Replaced_Asset__c</errorDisplayField>
+    <errorMessage>Replaced Asset is required for Maintenance Replacement assignments.</errorMessage>
+</ValidationRule>
