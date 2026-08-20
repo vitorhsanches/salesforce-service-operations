@@ -3,6 +3,16 @@
     <apiVersion>67.0</apiVersion>
     <areMetricsLoggedToDataCloud>false</areMetricsLoggedToDataCloud>
     <customErrors>
+        <name>Asset_Account_Mismatch</name>
+        <label>Asset Account Mismatch</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <customErrorMessages>
+            <errorMessage>The selected Asset does not belong to the selected Account.</errorMessage>
+            <isFieldError>false</isFieldError>
+        </customErrorMessages>
+    </customErrors>
+    <customErrors>
         <name>Contract_Account_Mismatch</name>
         <label>Contract Account Mismatch</label>
         <locationX>0</locationX>
@@ -13,10 +23,35 @@
         </customErrorMessages>
     </customErrors>
     <decisions>
+        <name>Asset_Belongs_to_Account</name>
+        <label>Asset Belongs to Account?</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Asset_Mismatch</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Get_Selected_Asset.AccountId</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <elementReference>$Record.Account__c</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Asset_Account_Mismatch</targetReference>
+            </connector>
+            <label>Asset Mismatch</label>
+        </rules>
+    </decisions>
+    <decisions>
         <name>Contract_Belongs_to_Account</name>
         <label>Contract Belongs to Account?</label>
         <locationX>0</locationX>
         <locationY>0</locationY>
+        <defaultConnector>
+            <targetReference>Get_Selected_Asset</targetReference>
+        </defaultConnector>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>Mismatch</name>
@@ -56,6 +91,27 @@
         </value>
     </processMetadataValues>
     <processType>AutoLaunchedFlow</processType>
+    <recordLookups>
+        <name>Get_Selected_Asset</name>
+        <label>Get Selected Asset</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Asset_Belongs_to_Account</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.Asset__c</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>Asset</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
     <recordLookups>
         <name>Get_Selected_Contract</name>
         <label>Get Selected Contract</label>
